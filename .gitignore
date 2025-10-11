@@ -1,5 +1,6 @@
 .DS_Store
 *.txt
+*.sbatch
 
 dorado-1.1.1-linux-x64/
 Models/
