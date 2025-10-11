@@ -28,7 +28,7 @@ def validate_cfg(cfg: dict):
 		raise ValueError("config.yml: 'trim' must be one of 'both', 'yes', or 'no'.")
 
 
-def build_commands(cfg: dict) -> list[str]:
+def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	pod5_dirs      = cfg["pod5_dirs"]
 	model_versions = cfg["model_versions"]
 	model_types    = cfg["model_types"]
@@ -50,7 +50,8 @@ def build_commands(cfg: dict) -> list[str]:
 
 	mods_list = model_mods if model_mods else [None]
 
-	commands = []
+	buckets = {t: [] for t in model_types}
+
 	for pod_dir, version, mtype, mod, trimmed in product(pod5_dirs, model_versions, model_types, mods_list, trims):
 		sample = Path(pod_dir).name or str(Path(pod_dir))
 		base_model = f"{model_prefix}{mtype}@v{version}"
@@ -58,7 +59,7 @@ def build_commands(cfg: dict) -> list[str]:
 
 		trim_tag = f"trim{1 if trimmed else 0}"
 		bam_name = f"{sample}_{mtype}_v{version}_{trim_tag}"
-		
+
 		if mod:
 			bam_name += f"_{mod}"
 		bam_name += ".bam"
@@ -69,15 +70,17 @@ def build_commands(cfg: dict) -> list[str]:
 			model_and_mod,
 			"-x", gpu,
 		]
+
 		if models_dir:
 			parts += ["--models-directory", models_dir]
 		if not trimmed:
 			parts.append("--no-trim")
 
 		parts += [pod_dir, ">", bam_name]
-		commands.append(" ".join(parts))
+		cmd = " ".join(parts)
+		buckets[mtype].append(cmd)
 
-	return commands
+	return buckets
 
 
 def write_commands_file(commands: list[str], out_path: str = "dorado_basecaller_commands.txt"):
@@ -86,12 +89,30 @@ def write_commands_file(commands: list[str], out_path: str = "dorado_basecaller_
 			fp.write(c + "\n")
 
 
+def write_files(buckets: dict) -> dict[str, tuple[str, int]]:
+	name_map = {
+		"fast": "dorado_basecaller_fast_cmd.txt",
+		"hac":  "dorado_basecaller_hac_cmd.txt",
+		"sup":  "dorado_basecaller_sup_cmd.txt",
+	}
+	written = {}
+	for tier, cmds in buckets.items():
+		outfile = name_map.get(tier, f"dorado_basecaller_{tier}_cmd.txt")
+		with open(outfile, "w", encoding="utf-8") as f:
+			for c in cmds:
+				f.write(c + "\n")
+		written[tier] = (outfile, len(cmds))
+	return written
+
+
 ########
 # main #
 ########
 
 cfg = load_config("config.yml")
 validate_cfg(cfg)
-cmds = build_commands(cfg)
-write_commands_file(cmds)
-print(f"Wrote {len(cmds)} commands to dorado_basecaller_commands.txt")
+buckets = build_commands_by_tier(cfg)
+written = write_files(buckets)
+
+msg = "Created: " + ", ".join(f"{tier}-{path} ({n} cmds)" for tier, (path, n) in written.items())
+print(msg)
