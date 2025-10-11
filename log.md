@@ -48,3 +48,25 @@ dna_r10.4.1_e8.2_400bps_fast@v5.2.0
 dna_r10.4.1_e8.2_400bps_hac@v5.2.0
 dna_r10.4.1_e8.2_400bps_sup@v5.2.0
 ```
+
+We will only test the most recent 3, v5.2.0, v5.0.0, and v4.3.0.
+
+### Experimental Design
+
+- 4 DNA-seq experiment data to basecall
+- 3 tiers of models
+- 3 versions of models
+- 2 trimming options (trim or no trim)
+
+72 total basecalls
+
+### Make dorado Commands by Tiers
+
+`make_dorado_commands.py`
+
+- relies on **env.yml** conda environment (pyyaml)
+- pieces managed by **config.yml**
+- `dorado basecaller` commands are written into tiered txt files
+
+### Build Sbatch Job Files
+
