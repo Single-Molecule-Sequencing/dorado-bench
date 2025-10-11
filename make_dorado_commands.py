@@ -37,6 +37,7 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	gpu            = str(cfg.get("gpu", "auto"))
 	models_dir     = cfg.get("models_directory", "")
 	dorado_exe     = cfg.get("dorado_exe", "dorado")
+	output_dir     = cfg.get("output_directory", "./Output")
 	model_prefix   = cfg.get("model_prefix", "dna_r10.4.1_e8.2_400bps_")
 
 	# trim states to test
@@ -65,18 +66,20 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 		bam_name += ".bam"
 
 		parts = [
-			dorado_exe,
+			Path(dorado_exe).resolve(),
 			"basecaller",
 			model_and_mod,
 			"-x", gpu,
 		]
 
 		if models_dir:
-			parts += ["--models-directory", models_dir]
+			parts += ["--models-directory", Path(models_dir).resolve()]
 		if not trimmed:
 			parts.append("--no-trim")
 
-		parts += [pod_dir, ">", bam_name]
+		output_path = Path(output_dir).resolve() / bam_name
+		parts += [Path(pod_dir).resolve(), ">", output_path]
+
 		cmd = " ".join(parts)
 		buckets[mtype].append(cmd)
 
