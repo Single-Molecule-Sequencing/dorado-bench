@@ -26,10 +26,11 @@ def derive_job_name(cmd: str, job_prefix: str, fallback_idx: int) -> str:
 	return f"{job_prefix}_{fallback_idx:04d}"
 
 
-def build_header(job_name: str, partition: str, gres: str, cpus: int, mem: str, walltime: str, email: str, logs_dir: str, module: str) -> str:
+def build_header(partition: str, job_name: str, account: str, gres: str, cpus: int, mem: str, walltime: str, email: str, logs_dir: str, module: str) -> str:
 	lines = [
 		"#!/bin/bash",
-		f"#SBATCH -p {partition}",
+		f"#SBATCH --partition={partition}",
+		f"#SBATCH --account={account}",
 		f"#SBATCH --job-name={job_name}",
 		f"#SBATCH --gres={gres}",
 		f"#SBATCH --nodes=1",
@@ -62,6 +63,8 @@ p.add_argument("-o", "--outdir", default=".",
 	help="Directory to write .sbatch files into [%(default)s]")
 p.add_argument("--partition", default="gpu_mig40",
 	help="Slurm partition [%(default)s]")
+p.add_argument("--account", required=True,
+	help="Slurm account")
 p.add_argument("--gres", default="gpu:nvidia_a100_80gb_pcie_3g.40gb:1",
 	help="Slurm GRES string [%(default)s]")
 p.add_argument("--cpus", type=int, default=8,
@@ -99,8 +102,9 @@ written = 0
 for idx, cmd in enumerate(cmds, start=1):
 	job_name = derive_job_name(cmd, args.job_prefix, idx)
 	header = build_header(
-		job_name  = job_name,
 		partition = args.partition,
+		account   = args.account,
+		job_name  = job_name,
 		gres      = args.gres,
 		cpus      = args.cpus,
 		mem       = args.mem,
