@@ -20,8 +20,12 @@ model_types:
   - hac
   - fast
 
-# Add later, ["5mC_5hmC", "6mA"]
-model_mods: []
+# Add later, model dirs to mods like "4mC", "5mC_5hmC", "6mA"
+mods_models: {
+  "4mC": ["./Mods/4mC"],
+  "5mC_5hmC": ["./Mods/5mC", "./Mods/5hmC"],
+  "6mA": ["./Mods/6mA"]
+}
 
 # Common prefix for model names
 model_prefix: dna_r10.4.1_e8.2_400bps_

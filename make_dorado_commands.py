@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from itertools import product
+from operator import mod
 from pathlib import Path
 import yaml
 
@@ -32,10 +33,10 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	pod5_dirs      = cfg["pod5_dirs"]
 	model_versions = cfg["model_versions"]
 	model_types    = cfg["model_types"]
-	model_mods     = cfg.get("model_mods", [])  # empty for now
+	mods_models    = cfg.get("mods_models", {})  # empty for now
 	trim_mode      = str(cfg.get("trim", "both")).lower()
 	gpu            = str(cfg.get("gpu", "auto"))
-	models_dir     = cfg.get("models_directory", "")
+	models_dir     = cfg.get("models_directory")
 	dorado_exe     = cfg.get("dorado_exe", "dorado")
 	output_dir     = cfg.get("output_directory", "./Output")
 	model_prefix   = cfg.get("model_prefix", "dna_r10.4.1_e8.2_400bps_")
@@ -51,31 +52,35 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	else:
 		trims = [False]
 
-	mods_list = model_mods if model_mods else [None]
-
 	buckets = {t: [] for t in model_types}
 
-	for pod_dir, version, mtype, mod, trimmed in product(pod5_dirs, model_versions, model_types, mods_list, trims):
+	for pod_dir, version, mtype, mods_dict, trimmed in product(pod5_dirs, model_versions, model_types, mods_models, trims):
 		sample = Path(pod_dir).name or str(Path(pod_dir))
-		base_model = f"{model_prefix}{mtype}@v{version}"
-		model_and_mod = base_model if not mod else f"{base_model},{mod}"
+		base_model_dir = models_dir / f"{model_prefix}{mtype}@v{version}"
 
 		trim_tag = f"trim{1 if trimmed else 0}"
 		bam_name = f"{sample}_{mtype}_v{version}_{trim_tag}"
 
-		if mod:
-			bam_name += f"_{mod}"
+		if mods_dict:
+			for mod_name, mod_model_dirs in mods_dict.items():
+				if "_" in mod_name:
+					# multiple mods, e.g. "5mC_5hmC"
+					for mod_model_dir in mod_model_dirs:
+						parts += ["--modified-bases-models", str(mod_model_dir.resolve())]
+						bam_name += f"_{mod_name}"
+				else:
+					parts += ["--modified-bases-models", str(mod_model_dirs[0].resolve())]
+					bam_name += f"_{mod_name}"
+
 		bam_name += ".bam"
 
 		parts = [
 			Path(dorado_exe).resolve(),
 			"basecaller",
-			model_and_mod,
+			base_model_dir,
 			"-x", gpu,
 		]
 
-		if models_dir:
-			parts += ["--models-directory", Path(models_dir).resolve()]
 		if not trimmed:
 			parts.append("--no-trim")
 
