@@ -2,6 +2,7 @@
 
 import argparse
 from pathlib import Path
+import shlex
 import sys
 
 
@@ -114,7 +115,10 @@ for idx, cmd in enumerate(cmds, start=1):
 		logs_dir  = logs_dir,
 		module    = args.module.strip()
 	)
-	script = f"{header}\n{cmd}\n"
+
+	cmd_tokens = shlex.split(cmd)
+	cmd_multiline = " \\\n  ".join(cmd_tokens)
+	script = f"{header}\n{cmd_multiline}\n"
 
 	outpath = outdir / f"{job_name}.sbatch"
 	if outpath.exists():
