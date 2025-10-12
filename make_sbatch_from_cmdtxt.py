@@ -39,6 +39,7 @@ def build_header(partition: str, job_name: str, account: str, gres: str, cpus: i
 		f"#SBATCH --mem={mem}",
 		f"#SBATCH --time={walltime}",
 		f"#SBATCH --mail-user={email}" if email else "",
+		f"#SBATCH --mail-type=BEGIN,END,FAIL" if email else "",
 		f"#SBATCH --output={logs_dir}/%x_%j.out",
 		f"#SBATCH --error={logs_dir}/%x_%j.err",
 		"",
