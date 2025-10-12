@@ -70,3 +70,16 @@ We will only test the most recent 3, v5.2.0, v5.0.0, and v4.3.0.
 
 ### Build Sbatch Job Files
 
+`make_sbatch_from_cmdtxt.py`
+
+- takes in txt files containing the commands
+- one tiered txt file at a time
+- options handled by **argparse**
+- provide account, outdir, time allocation, email (optional)
+
+### Submit Sbatch Files
+
+`sbatch_all.sh`
+
+- change sbdir to the directory containing the tiered directory of the sbatch files
+- change sleep length when necessary
