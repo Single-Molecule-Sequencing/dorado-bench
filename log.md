@@ -112,8 +112,6 @@ python3 make_sbatch_from_cmdtxt.py \
 
 ### Check Job Status
 
-On partition gpu_mig40
-
 ```bash
 squeue \
 -p gpu_mig40 \
