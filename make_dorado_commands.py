@@ -52,37 +52,35 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	else:
 		trims = [False]
 
+	mod_sets = list(mods_models.keys()) if mods_models else []
+	mod_branch_keys = [None] + mod_sets
+
 	buckets = {t: [] for t in model_types}
 
-	for pod_dir, version, mtype, mods_dict, trimmed in product(pod5_dirs, model_versions, model_types, mods_models, trims):
+	for pod_dir, version, mtype, mod_key, trimmed in product(pod5_dirs, model_versions, model_types, mod_branch_keys, trims):
 		sample = Path(pod_dir).name or str(Path(pod_dir))
 		base_model_dir = Path(models_dir) / f"{model_prefix}{mtype}@v{version}"
 
 		trim_tag = f"trim{1 if trimmed else 0}"
 		bam_name = f"{sample}_{mtype}_v{version}_{trim_tag}"
 
-		if mods_dict:
-			for mod_name, mod_model_dirs in mods_dict.items():
-				if "_" in mod_name:
-					# multiple mods, e.g. "5mC_5hmC"
-					for mod_model_dir in mod_model_dirs:
-						parts += ["--modified-bases-models", str(mod_model_dir.resolve())]
-						bam_name += f"_{mod_name}"
-				else:
-					parts += ["--modified-bases-models", str(mod_model_dirs[0].resolve())]
-					bam_name += f"_{mod_name}"
-
-		bam_name += ".bam"
-
 		parts = [
-			Path(dorado_exe).resolve(),
+			str(Path(dorado_exe).resolve()),
 			"basecaller",
-			base_model_dir,
+			str(base_model_dir),
 			"-x", gpu,
 		]
 
 		if not trimmed:
 			parts.append("--no-trim")
+
+		if mod_key is not None:
+			mod_dirs = mods_models.get(mod_key, [])
+			for mdir in mod_dirs:
+				parts += ["--modified-bases-models", str(Path(mdir).resolve())]
+			bam_name += f"_mods-{mod_key}"
+
+		bam_name += ".bam"
 
 		output_path = Path(output_dir).resolve() / bam_name
 		parts += [Path(pod_dir).resolve(), ">", output_path]
