@@ -40,6 +40,8 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	output_dir     = cfg.get("output_directory", "./Output")
 	model_prefix   = cfg.get("model_prefix", "dna_r10.4.1_e8.2_400bps_")
 
+	Path(output_dir).mkdir(parents=True, exist_ok=True)
+
 	# trim states to test
 	if trim_mode == "both":
 		# True => trim1 (default trimming), False => trim0 (--no-trim)
