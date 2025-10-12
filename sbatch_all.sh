@@ -2,7 +2,7 @@
 set -euo pipefail
 
 shopt -s nullglob
-for dir in ./Slurm/*/; do
+for dir in ./Sbatch/*/; do
   for f in "$dir"*.sbatch; do
     echo "Submitting: $f"
     sbatch "$f"
