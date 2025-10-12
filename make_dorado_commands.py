@@ -80,7 +80,7 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 		output_path = Path(output_dir).resolve() / bam_name
 		parts += [Path(pod_dir).resolve(), ">", output_path]
 
-		cmd = " ".join(parts)
+		cmd = " ".join(str(p) for p in parts)
 		buckets[mtype].append(cmd)
 
 	return buckets
