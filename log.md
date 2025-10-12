@@ -68,6 +68,20 @@ We will only test the most recent 3, v5.2.0, v5.0.0, and v4.3.0.
 - pieces managed by **config.yml**
 - `dorado basecaller` commands are written into tiered txt files
 
+example usage:
+
+```bash
+python3 make_dorado_commands.py
+```
+
+files created are:
+
+```
+dorado_basecaller_fast_cmd.txt
+dorado_basecaller_hac_cmd.txt
+dorado_basecaller_sup_cmd.txt
+```
+
 ### Build Sbatch Job Files
 
 `make_sbatch_from_cmdtxt.py`
@@ -77,9 +91,31 @@ We will only test the most recent 3, v5.2.0, v5.0.0, and v4.3.0.
 - options handled by **argparse**
 - provide account, outdir, time allocation, email (optional)
 
+example usage:
+
+```bash
+# sup
+python3 make_sbatch_from_cmdtxt.py \
+-i dorado_basecaller_sup_cmd.txt \
+-o Sbatch/sup \
+--account bleu99 \
+--time "16:00:00" \
+--email hrli@umich.edu
+```
+
 ### Submit Sbatch Files
 
 `sbatch_all.sh`
 
 - change sbdir to the directory containing the tiered directory of the sbatch files
 - change sleep length when necessary
+
+### Check Job Status
+
+On partition gpu_mig40
+
+```bash
+squeue \
+-p gpu_mig40 \
+-o "%.18i %.9P %.20j %.8u %.2t %.10M %.6D %R" | sort
+```
