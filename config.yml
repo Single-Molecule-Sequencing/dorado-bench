@@ -38,4 +38,6 @@ gpu: auto
 
 # Pre-downloaded models directory
 models_directory: ./Models
+
+# Output BAM Directory
 output_directory: ./Output
