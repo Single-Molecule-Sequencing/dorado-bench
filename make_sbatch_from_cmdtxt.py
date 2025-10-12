@@ -20,7 +20,7 @@ def derive_job_name(cmd: str, job_prefix: str, fallback_idx: int) -> str:
 	"""
 	X.bam -> X
 	"""
-	base = cmd.split(">")[-1].strip().rsplit(".", 1)[0]
+	base = cmd.rsplit("/", 1)[-1].rsplit(".", 1)[0]
 	if base:
 		return f"{job_prefix}_{base}"
 	return f"{job_prefix}_{fallback_idx:04d}"
