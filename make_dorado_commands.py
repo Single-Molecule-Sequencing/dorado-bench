@@ -67,7 +67,7 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 		parts = [
 			str(Path(dorado_exe).resolve()),
 			"basecaller",
-			str(base_model_dir),
+			str(base_model_dir.resolve()),
 			"-x", gpu,
 		]
 
