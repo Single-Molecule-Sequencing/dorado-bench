@@ -91,7 +91,7 @@ outdir = Path(args.outdir)
 
 outdir.mkdir(parents=True, exist_ok=True)
 
-logs_dir = outdir / "Logs"
+logs_dir = Path(outdir / "Logs").resolve()
 logs_dir.mkdir(parents=True, exist_ok=True)
 
 cmds = read_commands(inpath)
