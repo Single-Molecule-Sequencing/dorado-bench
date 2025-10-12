@@ -56,7 +56,7 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 
 	for pod_dir, version, mtype, mods_dict, trimmed in product(pod5_dirs, model_versions, model_types, mods_models, trims):
 		sample = Path(pod_dir).name or str(Path(pod_dir))
-		base_model_dir = models_dir / f"{model_prefix}{mtype}@v{version}"
+		base_model_dir = Path(models_dir) / f"{model_prefix}{mtype}@v{version}"
 
 		trim_tag = f"trim{1 if trimmed else 0}"
 		bam_name = f"{sample}_{mtype}_v{version}_{trim_tag}"
