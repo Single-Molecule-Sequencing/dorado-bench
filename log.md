@@ -117,3 +117,23 @@ squeue \
 -p gpu_mig40 \
 -o "%.18i %.9P %.20j %.8u %.2t %.10M %.6D %R" | sort
 ```
+
+### Check Job Summary
+
+Change user to whoever submitted the jobs
+
+Change partition to whichever partition we submitted the jobs to
+
+Use `grep` to apply filters
+
+Saved as "|" delimited txt using the parsable2 option
+
+```bash
+sacct \
+--starttime 2025-10-12 \
+--user=hrli \
+--partition=gpu_mig40 \
+--format=JobID,JobName,Partition,Account,AllocCPUs,State,ExitCode,Elapsed,MaxRSS,AveRSS,ReqMem,AveDiskRead,AveDiskWrite \
+--parsable2 | grep "dorado_" | grep "COMPLETED" > dorado-bench-slurm-stats.txt
+```
+
