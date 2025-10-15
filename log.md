@@ -126,7 +126,7 @@ Change partition to whichever partition we submitted the jobs to
 
 Use `grep` to apply filters
 
-Saved as "|" delimited txt using the parsable2 option
+Saved as "|" delimited values in psv file format using the parsable2 option
 
 ```bash
 sacct \
@@ -134,6 +134,6 @@ sacct \
 --user=hrli \
 --partition=gpu_mig40 \
 --format=JobID,JobName,Partition,Account,AllocCPUs,State,ExitCode,Elapsed,MaxRSS,AveRSS,ReqMem,AveDiskRead,AveDiskWrite \
---parsable2 | grep "dorado_" | grep "COMPLETED" > dorado-bench-slurm-stats.txt
+--parsable2 | grep "dorado_" | grep "COMPLETED" > dorado-bench-slurm-stats.psv
 ```
 
