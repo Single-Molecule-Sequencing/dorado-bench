@@ -122,7 +122,7 @@ squeue \
 
 Change user to whoever submitted the jobs
 
-Change partition to whichever partition we submitted the jobs to
+Change partition to whichever partition the jobs were submitted to
 
 Use `grep` to apply filters
 
