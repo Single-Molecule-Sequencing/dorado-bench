@@ -7,19 +7,19 @@ A file that logs commands used for later reference.
 ### Download Dorado Software
 
 ```bash
-curl "https://cdn.oxfordnanoportal.com/software/analysis/dorado-1.2.0-linux-x64.tar.gz" -o dorado-1.1.1-linux-x64.tar.gz
+curl "https://cdn.oxfordnanoportal.com/software/analysis/dorado-1.2.0-linux-x64.tar.gz" -o dorado-1.2.0-linux-x64.tar.gz
 ```
 
 ### Inflating Tar Ball
 
 ```bash
-tar -xzf dorado-1.1.1-linux-x64.tar.gz
+tar -xzf dorado-1.2.0-linux-x64.tar.gz
 ```
 
 ### Removing Tar Ball
 
 ```bash
-rm dorado-1.1.1-linux-x64.tar.gz
+rm dorado-1.2.0-linux-x64.tar.gz
 ```
 
 ### Download Dorado Models
