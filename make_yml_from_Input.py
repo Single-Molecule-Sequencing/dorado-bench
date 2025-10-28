@@ -17,11 +17,11 @@ input_dir   = args.input_dir
 output_file = args.output_file
 
 # Get all subdirectories in input_dir
-pod5_dirs = [
+pod5_dirs = sorted([
 	os.path.join(input_dir, d)
 	for d in os.listdir(input_dir)
 	if os.path.isdir(os.path.join(input_dir, d))
-]
+])
 
 # Create YAML structure
 config = {"pod5_dirs": pod5_dirs}
