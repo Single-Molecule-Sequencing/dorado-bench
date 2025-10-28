@@ -123,5 +123,5 @@ validate_cfg(cfg)
 buckets = build_commands_by_tier(cfg)
 written = write_files(buckets)
 
-msg = "Created: " + ", ".join(f"{tier}-{path} ({n} cmds)" for tier, (path, n) in written.items())
+msg = "Created: " + ", ".join(f"{tier} - {path} ({n} cmds)" for tier, (path, n) in written.items())
 print(msg)
