@@ -26,6 +26,7 @@ def validate_cfg(cfg: dict):
 
 	trim = str(cfg.get("trim", "both")).lower()
 	if trim not in {"both", "yes", "no"}:
+		print(f"Invalid trim value: {trim}")
 		raise ValueError("config.yml: 'trim' must be one of 'both', 'yes', or 'no'.")
 
 
