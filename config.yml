@@ -1,5 +1,5 @@
 # Dorado executable (full path or just 'dorado' if in $PATH)
-dorado_exe: ./dorado-1.1.1-linux-x64/bin/dorado
+dorado_exe: ./dorado-1.2.0-linux-x64/bin/dorado
 
 # All POD5 input directories
 pod5_dirs:
