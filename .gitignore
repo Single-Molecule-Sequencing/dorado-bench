@@ -1,6 +1,7 @@
 .DS_Store
 *.txt
 *.sbatch
+dorado-bench*.*
 test.py
 
 dorado-*-linux-x64/
