@@ -44,5 +44,8 @@ gpu: auto
 # Pre-downloaded models directory
 models_directory: ./Models
 
+# Pre-downloaded mods models directory
+mods_directory: ./Mods
+
 # Output BAM Directory
 output_directory: ./Output
