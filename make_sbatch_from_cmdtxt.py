@@ -27,7 +27,7 @@ def derive_job_name(cmd: str, job_prefix: str, fallback_idx: int) -> str:
 	return f"{job_prefix}_{fallback_idx:04d}"
 
 
-def build_header(partition: str, job_name: str, account: str, gres: str, cpus: int, mem: str, walltime: str, email: str, logs_dir: str, module: str) -> str:
+def build_header(partition: str, job_name: str, account: str, gres: str, cpus: int, mem: str, walltime: str, email: str, logs_dir: Path, module: str) -> str:
 	lines = [
 		"#!/bin/bash",
 		f"#SBATCH --partition={partition}",
