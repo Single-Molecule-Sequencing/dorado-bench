@@ -148,15 +148,7 @@ for v in args.versions:
 		sys.exit(f"[Model Downloader] Error: invalid version format: {v} (expected format: X.Y.Z)")
 
 try:
-	result = subprocess.run(
-		[args.dorado, "download", "--list"],
-		stdout=subprocess.PIPE,
-		stderr=subprocess.STDOUT,
-		text=True,
-		check=True,
-	)
-except FileNotFoundError:
-	sys.exit(f"[Model Downloader] Error: dorado executable not found at path: {args.dorado}")
+	result = subprocess.run([dorado_exe_path, "download", "--list"], capture_output=True, text=True, check=True)
 except subprocess.CalledProcessError as exc:
 	sys.exit(f"[Model Downloader] Error: command failed: {' '.join(exc.cmd)}\n[Model Downloader] Exit code: ,{exc.returncode}")
 
