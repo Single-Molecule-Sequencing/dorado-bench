@@ -97,8 +97,6 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 				count += 1
 				continue
 
-			os.makedirs(target_dir, exist_ok=False)
-
 			print(f"[Model Downloader] Running (version {version}): {' '.join(cmd)}")
 			try:
 				subprocess.run(cmd, check=True)
