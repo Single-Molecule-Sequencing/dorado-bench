@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from itertools import product
-from operator import mod
 from pathlib import Path
 import yaml
 
