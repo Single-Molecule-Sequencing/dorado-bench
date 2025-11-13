@@ -47,7 +47,8 @@ def parse_models(list_text: str) -> dict[str, dict[str, list[str]]]:
 			if not model_name.startswith("dna"):
 				continue
 
-			print(model_name)
+			if "polish_bacterial_methylation" in model_name:
+				continue
 
 			version = model_name.split("@v", 1)[1][:5]
 
