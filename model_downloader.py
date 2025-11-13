@@ -59,7 +59,7 @@ def parse_models(list_text: str) -> dict[str, dict[str, list[str]]]:
 	return models_by_type
 
 
-def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions: list[str], models_by_type: dict[str, dict[str, list[str]]], dry_run: bool) -> None:
+def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions: list[str], models_by_type: dict[str, dict[str, list[str]]], dry_run: bool) -> int:
 	type_dict = models_by_type[model_type]
 	dir_name = TYPE_DIR_NAMES[model_type]
 	type_dir = (base_dir / dir_name).resolve()
@@ -68,6 +68,7 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 		base_dir.mkdir(parents=True, exist_ok=True)
 		type_dir.mkdir(parents=True, exist_ok=True)
 
+	count = 0
 	for version in versions:
 		if version not in type_dict:
 			sys.exit(f"[Model Downloader] Error: no models found for type {model_type} with version {version}")
@@ -103,8 +104,9 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 				subprocess.run(cmd, check=True)
 			except subprocess.CalledProcessError as exc:
 				sys.exit(f"[Model Downloader] Error: Download failed for model {model_name} with exit code {exc.returncode}")
+			count += 1
 
-	return None
+	return count
 
 
 parser = argparse.ArgumentParser(description="Download DNA Dorado models by type and version")
@@ -163,7 +165,7 @@ list_output = result.stdout + result.stderr
 models_by_type = parse_models(list_output)
 base_dir = Path(args.models_dir).resolve()
 
-download_models(
+exec_time = download_models(
 	dorado_exe_path,
 	base_dir,
 	args.type,
@@ -171,3 +173,5 @@ download_models(
 	models_by_type,
 	args.dry_run,
 )
+
+print(f"[Model Downloader] Completed. Total models downloaded: {exec_time}")
