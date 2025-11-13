@@ -94,7 +94,7 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 			if dry_run:
 				print(f"[DRY-RUN] Version {version} - model: {model_name}")
 				print(f"[DRY-RUN] Would create directory: {target_dir}")
-				print(f"[DRY-RUN] Would run: {' '.join(cmd)}")
+				print(f"[DRY-RUN] Would run: {' '.join(cmd)}\n")
 				count += 1
 				continue
 
