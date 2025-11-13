@@ -47,6 +47,8 @@ def parse_models(list_text: str) -> dict[str, dict[str, list[str]]]:
 			if not model_name.startswith("dna"):
 				continue
 
+			print(model_name)
+
 			version = model_name.split("@v", 1)[1][:5]
 
 			if version not in models_by_type[current_type]:
