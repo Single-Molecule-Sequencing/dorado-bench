@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -66,6 +65,7 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 
 	if not dry_run:
 		base_dir.mkdir(parents=True, exist_ok=True)
+		type_dir.mkdir(parents=True, exist_ok=True)
 
 	count = 0
 	for version in versions:
