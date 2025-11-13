@@ -42,10 +42,10 @@ trim: both
 gpu: auto
 
 # Pre-downloaded models directory
-models_directory: ./Models
+models_directory: ./Models/Simplex
 
 # Pre-downloaded mods models directory
-mods_directory: ./Mods
+mods_directory: ./Models/Mods
 
 # Output BAM Directory
 output_directory: ./Output
