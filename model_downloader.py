@@ -61,6 +61,10 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 	dir_name = TYPE_DIR_NAMES[model_type]
 	type_dir = (base_dir / dir_name).resolve()
 
+	if not dry_run:
+		base_dir.mkdir(parents=True, exist_ok=True)
+		type_dir.mkdir(parents=True, exist_ok=True)
+
 	for version in versions:
 		if version not in type_dict:
 			sys.exit(f"[Model Downloader] Error: no models found for type {model_type} with version {version}")
@@ -153,11 +157,7 @@ except subprocess.CalledProcessError as exc:
 	sys.exit(f"[Model Downloader] Error: command failed: {' '.join(exc.cmd)}\n[Model Downloader] Exit code: ,{exc.returncode}")
 
 list_output = result.stdout + result.stderr
-print(list_output)
-sys.exit(3)
 models_by_type = parse_models(list_output)
-
-
 base_dir = Path(args.models_dir).resolve()
 
 download_models(
