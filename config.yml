@@ -41,7 +41,7 @@ trim: both
 # On Slurm with A100 MIG, "auto" is ideal; visibility is restricted by Slurm.
 gpu: auto
 
-# Pre-downloaded models directory
+# Pre-downloaded simplex models directory
 models_directory: ./Models/Simplex
 
 # Pre-downloaded mods models directory
