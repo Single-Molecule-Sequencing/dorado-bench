@@ -38,6 +38,7 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	trim_mode      = str(cfg.get("trim", "both")).lower()
 	gpu            = str(cfg.get("gpu", "auto"))
 	models_dir     = cfg.get("models_directory")
+	mods_dir       = cfg.get("mods_directory")
 	dorado_exe     = cfg.get("dorado_exe", "dorado")
 	output_dir     = cfg.get("output_directory", "./Output")
 	model_prefix   = cfg.get("model_prefix", "dna_r10.4.1_e8.2_400bps_")
