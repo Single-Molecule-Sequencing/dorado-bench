@@ -95,6 +95,7 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 				print(f"[DRY-RUN] Version {version} - model: {model_name}")
 				print(f"[DRY-RUN] Would create directory: {target_dir}")
 				print(f"[DRY-RUN] Would run: {' '.join(cmd)}")
+				count += 1
 				continue
 
 			os.makedirs(target_dir, exist_ok=False)
@@ -174,4 +175,7 @@ exec_time = download_models(
 	args.dry_run,
 )
 
-print(f"[Model Downloader] Completed. Total models downloaded: {exec_time}")
+if not args.dry_run:
+	print(f"[Model Downloader] Completed. Total models downloaded: {exec_time}")
+else:
+	print(f"[Model Downloader] Dry-run completed. Total models that would be downloaded: {exec_time}")
