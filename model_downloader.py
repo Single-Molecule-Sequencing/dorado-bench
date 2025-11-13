@@ -51,12 +51,7 @@ def parse_models(list_text: str) -> dict[str, dict[str, list[str]]]:
 
 			if version not in models_by_type[current_type]:
 				models_by_type[current_type][version] = []
-			else:
-				models_by_type[current_type][version].append(model_name)
-
-	for mtype, type_dict in models_by_type.items():
-		for version, model_list in type_dict.items():
-			print(f"[Model Downloader] Found {len(model_list)} models for type '{mtype}' version '{version}'")
+			models_by_type[current_type][version].append(model_name)
 
 	return models_by_type
 
@@ -166,8 +161,10 @@ except subprocess.CalledProcessError as exc:
 	sys.exit(f"[Model Downloader] Error: command failed: {' '.join(exc.cmd)}\n[Model Downloader] Exit code: ,{exc.returncode}")
 
 list_output = result.stdout
-models_by_type = parse_models(list_output)
+print(list_output)
 sys.exit(3)
+models_by_type = parse_models(list_output)
+
 
 base_dir = Path(args.models_dir).resolve()
 
