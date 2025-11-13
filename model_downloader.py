@@ -88,7 +88,7 @@ def download_models(dorado_exe: Path, base_dir: Path, model_type: str, versions:
 				"--model",
 				model_name,
 				"--models-directory",
-				str(target_dir),
+				str(type_dir),
 			]
 
 			if dry_run:
