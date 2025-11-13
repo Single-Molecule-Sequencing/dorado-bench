@@ -148,15 +148,11 @@ for v in args.versions:
 		sys.exit(f"[Model Downloader] Error: invalid version format: {v} (expected format: X.Y.Z)")
 
 try:
-	result = subprocess.run([dorado_exe_path, "download", "--list"],
-	stdout=subprocess.PIPE,
-    stderr=subprocess.STDOUT,
-    text=True,
-    check=True,)
+	result = subprocess.run([dorado_exe_path, "download", "--list"], capture_output=True, text=True, check=True)
 except subprocess.CalledProcessError as exc:
 	sys.exit(f"[Model Downloader] Error: command failed: {' '.join(exc.cmd)}\n[Model Downloader] Exit code: ,{exc.returncode}")
 
-list_output = result.stdout
+list_output = result.stdout + result.stderr
 print(list_output)
 sys.exit(3)
 models_by_type = parse_models(list_output)
