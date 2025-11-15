@@ -20,6 +20,11 @@ model_types:
   - hac
   - fast
 
+# Modifications calling switch
+# Set to true to enable modifications calling
+# Set to false to disable modifications calling
+mods_switch: true
+
 # Modifications models mapping by simplex model version
 mods_mapping: {
   "5.2.0": {"4mC_5mC": ["v1"], "5mCG_5hmCG": ["v1", "v2"], "5mC_5hmC": ["v1", "v2"], "6mA": ["v1"]},
