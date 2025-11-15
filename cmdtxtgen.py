@@ -59,14 +59,14 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 	buckets = {t: [] for t in model_types}
 
 	for pod_dir, version, mtype, mod_key, trimmed in product(pod5_dirs, model_versions, model_types, mod_branch_keys, trims):
-		sample = Path(pod_dir).name or str(Path(pod_dir))
-		base_model_dir = Path(models_dir) / f"{model_prefix}{mtype}@v{version}"
+		sample = Path(str(pod_dir)).name or str(Path(str(pod_dir)))
+		base_model_dir = Path(str(models_dir)) / f"{model_prefix}{mtype}@v{version}"
 
 		trim_tag = f"trim{1 if trimmed else 0}"
 		bam_name = f"{sample}_{mtype}_v{version}_{trim_tag}"
 
 		parts = [
-			str(Path(dorado_exe).resolve()),
+			str(Path(str(dorado_exe)).resolve()),
 			"basecaller",
 			str(base_model_dir.resolve()),
 			"-x", gpu,
@@ -83,8 +83,8 @@ def build_commands_by_tier(cfg: dict) -> dict[str, list[str]]:
 
 		bam_name += ".bam"
 
-		output_path = Path(output_dir).resolve() / bam_name
-		parts += [Path(pod_dir).resolve(), ">", output_path]
+		output_path = Path(str(output_dir)).resolve() / bam_name
+		parts += [Path(str(pod_dir)).resolve(), ">", output_path]
 
 		cmd = " ".join(str(p) for p in parts)
 		buckets[mtype].append(cmd)

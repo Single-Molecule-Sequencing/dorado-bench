@@ -3,10 +3,10 @@ dorado_exe: ./dorado-1.2.0-linux-x64/bin/dorado
 
 # All POD5 input directories
 pod5_dirs:
-  - ./Input/30_40_PVU2
-  - ./Input/30_40_SRF1
-  - ./Input/pCYP_2987
-  - ./Input/pCYP_3040
+  - "./Input/30_40_PVU2"
+  - "./Input/30_40_SRF1"
+  - "./Input/pCYP_2987"
+  - "./Input/pCYP_3040"
 
 # Model versions to test
 model_versions:
